@@ -12,10 +12,10 @@ server.use(cors()); // make the server opened for any request
 const PORT = process.env.PORT;
 
 
-
 // http://localhost:3000/
 server.get('/', (req, res) => {
     res.send("Hi from the home route");
+    console.log("connected?")
 })
 
 
@@ -33,24 +33,27 @@ server.get('/getWeatherDescription', (req, res) => {
     res.send(weatherDescription);
 })
 
-// http://localhost:3000/getPockData?name=pockName
+// http://localhost:3000/getWeatherData?name=name
 server.get('/getWeatherData', (req, res) => {
-    console.log(req.query.city_name);
+    console.log('from request');
+    console.log(req.query.name);
     const result = weatherData.find((item) => {
-        if (item.city_name == req.query.city_name) {
+        if (item.city_name.toLowerCase == req.query.name.toLowerCase) {
             return item;
-        } else {
-            if (item.lat == req.query.lat && item.lon == req.query.lon) {
-                return item;
-            }
-            else {
-                alert("Invalid query");
-            }
         }
+        // else {
+        //     if (item.lat == req.query.lat && item.lon == req.query.lon) {
+        //         return item;
+        //     }
+        //     else {
+        //         return ("Invalid query");
+        //     }
+        // }
     })
-    console.log(result);
+    console.log('to be sent');
+    console.log(result.city_name);
 
-    res.send(result.data);
+    res.send(result);
 })
 
 server.get('*', (req, res) => {
